@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NagarSeva - Next Gen Citizen Platform</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="topbar">
+            <a href="#" class="brand">
+                <div class="logo-box">₹</div>
+                <div class="brand-info">
+                    <h1>NagarSeva</h1>
+                    <p>Report. Resolve. Earn.</p>
+                </div>
+            </a>
+            
+            <nav class="nav-menu">
+                <button class="nav-link btn-cta active" data-target="report">
+                    <span>📷</span> Report
+                </button>
+                <button class="nav-link" data-target="feed">
+                    <span>🌊</span> Feed
+                </button>
+                <button class="nav-link" data-target="map">
+                    <span>🗺️</span> Map
+                </button>
+                <button class="nav-link" data-target="rewards">
+                    <span>🏆</span> Rewards
+                </button>
+                <button class="nav-link" data-target="admin">
+                    <span>⚡</span> Admin
+                </button>
+            </nav>
+        </header>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <main>
+            <!-- VIEW: Report Issue -->
+            <section id="view-report" class="main-view active">
+                <div class="grid-layout">
+                    <!-- Left: Upload -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Evidence</h2>
+                                <p class="card-subtitle">Clear photos expedite resolution.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="photoInput" accept="image/*" capture="environment">
+                            <div class="upload-icon">📸</div>
+                            <div class="text-sm text-muted">Tap to upload photo</div>
+                            <img id="photoPreview" class="preview-img hidden" alt="Preview">
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h3 class="card-title" style="font-size: 1rem;">Location</h3>
+                            <div class="row" style="margin-top: 8px;">
+                                <div class="col">
+                                    <input type="text" id="lat" class="form-control" placeholder="Lat" readonly>
+                                </div>
+                                <div class="col">
+                                    <input type="text" id="lng" class="form-control" placeholder="Lng" readonly>
+                                </div>
+                            </div>
+                            <button class="btn btn-full mt-4" id="gpsBtn">📍 Use GPS Location</button>
+                            <div id="report-map" style="height: 150px; margin-top: 12px; border-radius: var(--radius-md);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Details Form -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Issue Details</h2>
+                                <p class="card-subtitle">Help authorities understand the problem.</p>
+                            </div>
+                        </div>
+                        
+                        <form id="issueForm">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select id="category" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    <option value="roads">🚗 Potholes / Roads</option>
+                                    <option value="sanitation">🗑️ Garbage / Sanitation</option>
+                                    <option value="water">💧 Water Leakage</option>
+                                    <option value="electricity">💡 Streetlights / Power</option>
+                                    <option value="safety">⚠️ Public Safety</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea id="description" class="form-control" placeholder="Describe the issue in detail..." required></textarea>
+                            </div>
+
+                            <div class="row">
+                                <div class="col form-group">
+                                    <label class="form-label">Area / Landmark</label>
+                                    <input type="text" id="address" class="form-control" placeholder="Eg. Near Central Park">
+                                </div>
+                                <div class="col form-group">
+                                    <label class="form-label">City</label>
+                                    <input type="text" id="city" class="form-control" placeholder="Eg. Mumbai">
+                                </div>
+                            </div>
+                            
+                            <hr style="border:0; border-top:1px solid var(--border-subtle); margin: 20px 0;">
+                            
+                            <div class="row">
+                                <div class="col form-group">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" id="reporterName" class="form-control" placeholder="Citizen Name">
+                                </div>
+                                <div class="col form-group">
+                                    <label class="form-label">Mobile Number</label>
+                                    <input type="tel" id="reporterPhone" class="form-control" placeholder="For Rewards">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-full" style="padding: 14px;">
+                                Submit Report 🚀
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Feed -->
+            <section id="view-feed" class="main-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Civic Feed</h2>
+                        <div class="feed-filters">
+                            <select id="filterCategory" class="form-control" style="width: auto;">
+                                <option value="">All Categories</option>
+                                <option value="roads">Roads</option>
+                                <option value="sanitation">Sanitation</option>
+                                <option value="water">Water</option>
+                            </select>
+                            <select id="filterStatus" class="form-control" style="width: auto;">
+                                <option value="">All Status</option>
+                                <option value="new">New</option>
+                                <option value="resolved">Resolved</option>
+                            </select>
+                            <input type="text" id="filterCity" class="form-control" style="width: 150px;" placeholder="Filter by City...">
+                        </div>
+                    </div>
+                    
+                    <div id="feedList" class="feed-grid">
+                        <!-- Issues injected here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Map -->
+            <section id="view-map" class="main-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">City Heatmap</h2>
+                    </div>
+                    <div id="issues-map" class="map-container"></div>
+                </div>
+            </section>
+
+            <!-- VIEW: Rewards -->
+            <section id="view-rewards" class="main-view">
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div class="wallet-card">
+                        <p>Total Earned Rewards</p>
+                        <div id="wallet-balance" class="wallet-balance">₹0</div>
+                        <p class="text-sm">Verified contributions to your city</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Check Wallet</h3>
+                        </div>
+                        <div class="row">
+                            <input type="tel" id="rewardPhone" class="form-control" placeholder="Enter registered mobile number">
+                            <button id="checkRewardsBtn" class="btn btn-primary">Check</button>
+                        </div>
+                        <div id="rewardHistory" class="mt-4">
+                            <!-- History -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Admin -->
+            <section id="view-admin" class="main-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Department Dashboard</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Category</th>
+                                    <th>City</th>
+                                    <th>Status</th>
+                                    <th>Reward Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <!-- Admin Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+</html>
