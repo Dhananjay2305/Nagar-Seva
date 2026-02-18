@@ -1,3 +1,4 @@
+
 # Nagar-Seva
 FixIndia is a civic-tech web platform where citizens can upload photos of society/public problems (potholes, garbage, streetlight issues, water leakage, etc.) and report them directly through a simple system. The government/authority can verify, solve the issue, and the citizen who reported it can receive a reward for contributing to society.
 
@@ -38,3 +39,5 @@ FixIndia provides a simple solution:
 ✅ The issue is stored and sent to the responsible department
 ✅ The department updates the status (Pending → In Progress → Resolved)
 ✅ Once verified, the citizen receives a reward (money/points)
+
+<img width="1895" height="924" alt="Screenshot (148)" src="https://github.com/user-attachments/assets/bd180a67-2d00-4611-b2e5-b08024373c91" />
