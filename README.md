@@ -8,16 +8,27 @@ The government/authority can verify, solve the issue, and the citizen who report
 🚀 Problem Statement
 
 In many Indian cities and villages, public issues like:
+
 potholes
+
 garbage overflow
+
 broken streetlights
+
 water leakage
+
 drainage blockage
+
 unsafe roads
+
 remain unresolved because:
+
 citizens don’t know where/how to complain
+
 complaints are not tracked properly
+
 there is no transparency
+
 government departments don’t get organized reports
 
 💡 Solution
